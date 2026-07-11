@@ -1,6 +1,8 @@
+#define DEBUG false
+
 #include <FastLED.h>
 #include <EEPROM.h>
-
+#include <avr/wdt.h>
 // =====================================================
 // SERIAL COMMANDS REFERENCE
 // =====================================================
@@ -116,7 +118,7 @@
 #define EEPROM_BRIGHTNESS  3
 #define EEPROM_MODE        4
 #define EEPROM_RAINBOW_SPEED 5
-
+#define EEPROM_STARTUP_ON 6
 
 // =====================================================
 // MODES
@@ -144,6 +146,11 @@ bool ledEnabled = false;
 
 uint8_t rainbowHue = 0;
 
+void debugMessage(String msg) {
+  if(DEBUG) {
+    Serial.println(msg);
+  }
+}
 
 // =====================================================
 // SAVE STATE TO EEPROM
@@ -151,6 +158,13 @@ uint8_t rainbowHue = 0;
 
 void saveState()
 {
+  debugMessage("Current Color R: " + String(currentColor.r));
+  debugMessage("Current Color G: " + String(currentColor.g));
+  debugMessage("Current Color B: " + String(currentColor.b));
+  debugMessage("Current Brightness: " + String(brightness));
+  debugMessage("Current Mode: " + String(currentMode));
+  debugMessage("Current Rainbow Speed: " + String(rainbowSpeed));
+
   EEPROM.update(EEPROM_COLOR_R, currentColor.r);
   EEPROM.update(EEPROM_COLOR_G, currentColor.g);
   EEPROM.update(EEPROM_COLOR_B, currentColor.b);
@@ -191,6 +205,39 @@ void loadState()
     rainbowSpeed = 5;
 }
 
+// =====================================================
+// RESET CONTROLLER
+// Restore factory defaults and reboot Arduino
+// =====================================================
+
+void resetController()
+{
+  // Default values
+  currentColor = PRESET_BLUE;
+  brightness = 40;
+  currentMode = MODE_STATIC;
+  rainbowSpeed = 5;
+
+  // Save defaults
+  saveState();
+
+  // Request automatic startup ON after reboot
+  EEPROM.update(EEPROM_STARTUP_ON, 1);
+  
+  // Turn LEDs OFF before reboot
+  ledEnabled = false;
+  showOff();
+
+  delay(500);
+
+  // Enable watchdog reset
+  wdt_enable(WDTO_15MS);
+
+  while(true)
+  {
+    // Wait for reboot
+  }
+}
 
 // =====================================================
 // APPLY STATIC COLOR
@@ -198,15 +245,14 @@ void loadState()
 
 void showStaticColor()
 {
+  debugMessage("Set color new: " + String(brightness) + " -> " + String(map(brightness,0,100,0,255)));
   FastLED.setBrightness(map(brightness,0,100,0,255));
 
-  fill_solid(
-    leds,
-    NUM_LEDS,
-    currentColor
-  );
-
-  FastLED.show();
+  debugMessage("Color = " + String(currentColor.r) + "," + String(currentColor.g) + "," + String(currentColor.b));
+  for(int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = currentColor;
+  }
+  FastLED.show(); 
 }
 
 
@@ -256,13 +302,14 @@ void showRainbow()
 void updateLED()
 {
 
+  debugMessage("Led Enabled: " + String(ledEnabled));
   if (!ledEnabled)
   {
     showOff();
     return;
   }
 
-
+  debugMessage("Is Static? " + String(currentMode == MODE_STATIC));
   if (currentMode == MODE_STATIC)
   {
     showStaticColor();
@@ -351,10 +398,8 @@ void processCommand(String cmd)
 {
 
   cmd.trim();
-
   cmd.toUpperCase();
-
-
+  debugMessage("CMD: " + cmd);
   // Turn OFF
   if(cmd=="OFF")
   {
@@ -363,6 +408,11 @@ void processCommand(String cmd)
     showOff();
   }
 
+  // Factory reset
+  else if(cmd=="RESET")
+  {
+    resetController();
+  }
 
   // Turn ON
   else if(cmd=="ON")
@@ -434,18 +484,28 @@ void setup()
     leds,
     NUM_LEDS
   );
-
+  FastLED.setMaxPowerInVoltsAndMilliamps(5, 2000);
 
   loadState();
 
-
-  // Always start OFF
-  ledEnabled=false;
-
-  showOff();
-
-
+  // Check if RESET requested startup ON
+  if (EEPROM.read(EEPROM_STARTUP_ON) == 1) {
+    ledEnabled = true;
+    EEPROM.update(EEPROM_STARTUP_ON, 0);
+    updateLED();
+  } else {
+    // Normal boot always OFF
+    ledEnabled = false;
+    showOff();
+  }
   Serial.begin(9600);
+  delay(1000);
+  debugMessage("==============================");
+  debugMessage("WS2812B CONTROLLER STARTED");
+  debugMessage("Started: " + String(millis()));
+  debugMessage("==============================");
+  debugMessage("Brightness: " + String(brightness));
+  debugMessage("Mode: " + String(currentMode));
 }
 
 
@@ -456,14 +516,12 @@ void setup()
 void loop()
 {
 
-  if(Serial.available())
-  {
+  if(Serial.available()) {
     String command =
       Serial.readStringUntil('\n');
 
     processCommand(command);
   }
-
 
   if(
     ledEnabled &&
