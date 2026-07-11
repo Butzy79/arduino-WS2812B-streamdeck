@@ -420,8 +420,10 @@ void processCommand(String cmd)
     ledEnabled=true;
     updateLED();
   }
-
-
+  else if(cmd=="NAME")
+  {
+    Serial.println("Led Stripe Simracing");
+  }
   // Brightness Bxxx
   else if(cmd.startsWith("B"))
   {
@@ -478,6 +480,11 @@ void processCommand(String cmd)
 
 void setup()
 {
+  Serial.begin(115200);
+  delay(1000);
+  Serial.println("DEVICE:Led Stripe Simracing");
+  Serial.println("VERSION:1.0");
+  Serial.println("READY");
 
   FastLED.addLeds<WS2812B,LED_PIN,GRB>
   (
@@ -498,8 +505,6 @@ void setup()
     ledEnabled = false;
     showOff();
   }
-  Serial.begin(9600);
-  delay(1000);
   debugMessage("==============================");
   debugMessage("WS2812B CONTROLLER STARTED");
   debugMessage("Started: " + String(millis()));
