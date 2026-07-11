@@ -420,9 +420,12 @@ void processCommand(String cmd)
     ledEnabled=true;
     updateLED();
   }
-  else if(cmd=="NAME")
+  else if(cmd=="INFO")
   {
-    Serial.println("Led Stripe Simracing");
+    Serial.println("DEVICE:Led Stripe Simracing");
+    Serial.println("VERSION:1.0");
+    Serial.println("LEDS:30");
+    Serial.println("READY");
   }
   // Brightness Bxxx
   else if(cmd.startsWith("B"))
