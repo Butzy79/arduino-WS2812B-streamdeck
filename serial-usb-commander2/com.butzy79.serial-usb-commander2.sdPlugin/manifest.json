@@ -2,12 +2,11 @@
 	"Name": "Serial USB Commander",
 	"Version": "0.1.0.0",
 	"Author": "Butzy79",
-	"Actions": [
-		{
-			"Name": "Counter",
+	"Actions": [{
+			"Name": "Send USB Serial Command",
 			"UUID": "com.butzy79.serial-usb-commander2.send",
 			"Icon": "imgs/actions/counter/icon",
-			"Tooltip": "Displays a count, which increments by one on press.",
+			"Tooltip": "Sends a command to an USB serial device.",
 			"PropertyInspectorPath": "ui/increment-counter.html",
 			"Controllers": [
 				"Keypad"
