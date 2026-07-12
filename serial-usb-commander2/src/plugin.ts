@@ -1,6 +1,6 @@
 import streamDeck from "@elgato/streamdeck";
 
-import { SendSerialCommand } from "./actions/increment-counter";
+import { SendSerialCommand } from "./actions/send-command";
 
 streamDeck.logger.setLevel("trace");
 

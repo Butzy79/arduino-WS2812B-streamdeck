@@ -7,7 +7,7 @@
 			"UUID": "com.butzy79.serial-usb-commander2.send",
 			"Icon": "imgs/actions/counter/icon",
 			"Tooltip": "Sends a command to an USB serial device.",
-			"PropertyInspectorPath": "ui/increment-counter.html",
+			"PropertyInspectorPath": "ui/serial-command.html",
 			"Controllers": [
 				"Keypad"
 			],
