@@ -1,9 +1,9 @@
 import streamDeck from "@elgato/streamdeck";
 
+import { SendSerialCommand } from "./actions/send-command";
+
 streamDeck.logger.setLevel("trace");
 
-console.log("START TEST");
+streamDeck.actions.registerAction(new SendSerialCommand());
 
 streamDeck.connect();
-
-console.log("AFTER CONNECT");
