@@ -1,6 +1,5 @@
-import { action, KeyDownEvent, SingletonAction } from "@elgato/streamdeck";
+import { streamDeck, action, KeyDownEvent, SingletonAction } from "@elgato/streamdeck";
 import { SerialPort } from "serialport";
-import streamDeck from "@elgato/streamdeck";
 
 @action({ UUID: "com.butzy79.serial-usb-commander2.send" })
 export class SendSerialCommand extends SingletonAction<SerialSettings> {
