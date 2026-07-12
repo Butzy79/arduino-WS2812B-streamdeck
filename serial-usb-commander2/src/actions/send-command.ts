@@ -9,6 +9,26 @@ export class SendSerialCommand extends SingletonAction<SerialSettings> {
 
 		console.log("COMMAND:", command);
 
+		const { SerialPort } = await import("serialport");
+
+		const port = new SerialPort({
+			path: "COM7",
+			baudRate: 115200
+		});
+
+		port.on("open", () => {
+			console.log("SERIAL OPEN");
+
+			port.write(command + "\n", () => {
+				console.log("SENT:", command);
+				port.close();
+			});
+		});
+
+		port.on("error", (err) => {
+			console.log("SERIAL ERROR:", err.message);
+		});
+
 		await ev.action.showOk();
 	}
 }
