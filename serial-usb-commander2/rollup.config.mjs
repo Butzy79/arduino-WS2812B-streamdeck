@@ -16,13 +16,11 @@ const config = {
 	output: {
 		inlineDynamicImports: true,
 		file: `${sdPlugin}/bin/plugin.js`,
-		format: "es",
 		sourcemap: isWatching,
 		sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
 			return url.pathToFileURL(path.resolve(path.dirname(sourcemapPath), relativeSourcePath)).href;
 		}
 	},
-	external: ["serialport", "@elgato/streamdeck"],
 	plugins: [
 		{
 			name: "watch-externals",
