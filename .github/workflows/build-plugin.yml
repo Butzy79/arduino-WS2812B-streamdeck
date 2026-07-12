@@ -37,11 +37,8 @@ jobs:
           git config --global user.email "github-actions@github.com"
 
           git add serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/bin/plugin.js
-          git add serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/package.json
-          git add serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/package-lock.json
           git add serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/node_modules
 
           git commit -m "Auto build Stream Deck plugin" || echo "Nothing to commit"
 
           git push
-      
