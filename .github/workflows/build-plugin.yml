@@ -26,6 +26,11 @@ jobs:
         working-directory: serial-usb-commander2
         run: npm run build
 
+      - name: Install serialport in plugin folder
+        working-directory: serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin
+        run: |
+          npm init -y
+          npm install --omit=dev serialport
 
       - name: Prepare plugin dependencies
         working-directory: serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin
@@ -42,7 +47,8 @@ jobs:
 
           git add serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/bin/plugin.js
           git add serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/node_modules
-
+          git add serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/package.json
+          git add serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/package-lock.json
           git commit -m "Auto build Stream Deck plugin" || echo "Nothing to commit"
 
           git push
