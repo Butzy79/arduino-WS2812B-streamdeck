@@ -16,11 +16,13 @@ const config = {
 	output: {
 		inlineDynamicImports: true,
 		file: `${sdPlugin}/bin/plugin.js`,
+		format: "es",
 		sourcemap: isWatching,
 		sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
 			return url.pathToFileURL(path.resolve(path.dirname(sourcemapPath), relativeSourcePath)).href;
 		}
 	},
+	external: ["serialport", "@elgato/streamdeck"],
 	plugins: [
 		{
 			name: "watch-externals",
@@ -34,12 +36,9 @@ const config = {
 		nodeResolve({
 			browser: false,
 			exportConditions: ["node"],
-			preferBuiltins: false
+			preferBuiltins: true
 		}),
-		commonjs({
-			include: /node_modules/,
-			transformMixedEsModules: true
-		}),
+		commonjs(),
 		!isWatching && terser(),
 		{
 			name: "emit-module-package-file",
