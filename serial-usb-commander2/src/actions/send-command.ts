@@ -8,9 +8,7 @@ export class SendSerialCommand extends SingletonAction<SerialSettings> {
 
 		const command = ev.payload.settings.command ?? "ON";
 
-		streamDeck.logger.info("KEY PRESSED");
-
-		streamDeck.logger.info("COMMAND:", command);
+		streamDeck.logger.info(`KEY PRESSED. Command to send: ${command}`);
 
 		const port = new SerialPort({
 			path: "COM5",
@@ -22,7 +20,7 @@ export class SendSerialCommand extends SingletonAction<SerialSettings> {
 		});
 
 		port.on("error", (err) => {
-			streamDeck.logger.info("SERIAL ERROR:", err.message);
+            streamDeck.logger.info(`KEY PRESSED. Command to send: ${err.message}`);
 
 		});
 
