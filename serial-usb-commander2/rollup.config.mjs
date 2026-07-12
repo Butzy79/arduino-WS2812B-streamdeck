@@ -13,6 +13,9 @@ const sdPlugin = "com.butzy79.serial-usb-commander2.sdPlugin";
  */
 const config = {
 	input: "src/plugin.ts",
+	external: [
+		"serialport"
+	],
 	output: {
 		inlineDynamicImports: true,
 		file: `${sdPlugin}/bin/plugin.js`,

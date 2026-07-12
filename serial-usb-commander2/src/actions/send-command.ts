@@ -10,7 +10,7 @@ export class SendSerialCommand extends SingletonAction<SerialSettings> {
 
 	override async onKeyDown(ev: KeyDownEvent<SerialSettings>): Promise<void> {
 		const command = ev.payload.settings.command ?? "ON";
-		streamDeck.logger.info(`KEY PRESSED -> Command to send: ${command}`);
+		streamDeck.logger.info(`KEY PRESSED --> Command to send: ${command}`);
 
 		// 1. CREA LA PORTA CON AUTOOPEN DISABILITATO
 		const port = new SerialPort({
