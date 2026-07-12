@@ -1,4 +1,5 @@
 import { action, KeyDownEvent, SingletonAction } from "@elgato/streamdeck";
+import { SerialPort } from "serialport";
 
 @action({ UUID: "com.butzy79.serial-usb-commander2.send" })
 export class SendSerialCommand extends SingletonAction<SerialSettings> {
@@ -9,6 +10,19 @@ export class SendSerialCommand extends SingletonAction<SerialSettings> {
 
 		console.log("KEY PRESSED");
 		console.log("COMMAND:", command);
+
+		const port = new SerialPort({
+			path: "COM5",
+			baudRate: 115200
+		});
+
+		port.on("open", () => {
+			console.log("SERIAL OPEN");
+		});
+
+		port.on("error", (err) => {
+			console.log("SERIAL ERROR:", err.message);
+		});
 
 		await ev.action.showOk();
 	}
