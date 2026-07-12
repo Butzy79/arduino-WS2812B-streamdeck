@@ -4,6 +4,7 @@ import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 import path from "node:path";
 import url from "node:url";
+import { execSync } from "node:child_process";
 
 const isWatching = !!process.env.ROLLUP_WATCH;
 const sdPlugin = "com.butzy79.serial-usb-commander2.sdPlugin";
@@ -45,6 +46,14 @@ const config = {
 			name: "emit-module-package-file",
 			generateBundle() {
 				this.emitFile({ fileName: "package.json", source: `{ "type": "module" }`, type: "asset" });
+			}
+		},
+		{
+			name: "copy-node-modules",
+			writeBundle() {
+				execSync("npm install --omit=dev --prefix com.butzy79.serial-usb-commander2.sdPlugin serialport", {
+					stdio: "inherit"
+				});
 			}
 		}
 	]
