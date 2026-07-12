@@ -30,6 +30,10 @@ jobs:
       - name: Prepare plugin dependencies
         working-directory: serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin
         run: npm install --omit=dev serialport
+      - name: Check plugin contents
+        run: |
+          ls -la serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin
+          ls -la serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/bin
 
       - name: Commit generated plugin
         run: |
