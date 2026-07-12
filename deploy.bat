@@ -26,6 +26,8 @@ REM =====================================================
 
 echo.
 echo Copying Plugins files for...
+del /F /Q "%ELGPLG%\com.butzy79.serial-usb-commander2.sdPlugin\*.*"
+for /D %%D in ("%ELGPLG%\com.butzy79.serial-usb-commander2.sdPlugin\*") do rmdir /S /Q "%%D"
 
 robocopy "%ROOT%\serial-usb-commander2\com.butzy79.serial-usb-commander2.sdPlugin" "%ELGPLG%\\com.butzy79.serial-usb-commander2.sdPlugin" *.* /S /COPY:DAT /R:1 /W:1
 

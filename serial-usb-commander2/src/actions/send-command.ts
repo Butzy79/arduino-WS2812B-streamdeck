@@ -14,7 +14,7 @@ export class SendSerialCommand extends SingletonAction<SerialSettings> {
 
 		// 1. CREA LA PORTA CON AUTOOPEN DISABILITATO
 		const port = new SerialPort({
-			path: "COM5",
+			path: "COM6",
 			baudRate: 115200,
 			autoOpen: false // <--- FONDAMENTALE! Evita che parta prima di agganciare i listener
 		});
