@@ -4,10 +4,8 @@ import { streamDeck, action, KeyDownEvent, SingletonAction } from "@elgato/strea
 export class SendSerialCommand extends SingletonAction<SerialSettings> {
 
 	override async onKeyDown(ev: KeyDownEvent<SerialSettings>): Promise<void> {
-
 		const command = ev.payload.settings.command ?? "ON";
-
-		streamDeck.logger.info(`KEY PRESSED. Command to send: ${command}`);
+		streamDeck.logger.info(`KEY PRESSED -> Command to send: ${command}`);
 
 		await ev.action.showOk();
 	}
