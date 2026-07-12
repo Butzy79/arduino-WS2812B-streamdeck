@@ -1,0 +1,18 @@
+{
+  "name": "com.butzy79.serial-usb-commander2.sdplugin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": {
+    "com.butzy79.serial-usb-commander2.sdplugin": "bin/plugin.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "serialport": "^13.0.0"
+  }
+}
