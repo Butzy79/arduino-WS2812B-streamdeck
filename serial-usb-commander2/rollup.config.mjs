@@ -14,6 +14,7 @@ const sdPlugin = "com.butzy79.serial-usb-commander2.sdPlugin";
 const config = {
 	input: "src/plugin.ts",
 	output: {
+		inlineDynamicImports: true,
 		file: `${sdPlugin}/bin/plugin.js`,
 		sourcemap: isWatching,
 		sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
