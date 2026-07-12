@@ -9,10 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    defaults:
-      run:
-        working-directory: serial-usb-commander2
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,17 +19,20 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
+        working-directory: serial-usb-commander2
         run: npm install
 
       - name: Build plugin
-        run: |
-          npm run build
-          ls -la com.butzy79.serial-usb-commander2.sdPlugin/bin
+        working-directory: serial-usb-commander2
+        run: npm run build
 
       - name: Commit generated plugin
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add com.butzy79.serial-usb-commander2.sdPlugin/bin/plugin.js
-          git commit -m "Auto build Stream Deck plugin" || exit 0
+
+          git add serial-usb-commander2/com.butzy79.serial-usb-commander2.sdPlugin/bin/plugin.js
+
+          git commit -m "Auto build Stream Deck plugin" || echo "Nothing to commit"
+
           git push
