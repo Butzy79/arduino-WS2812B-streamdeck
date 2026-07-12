@@ -15,6 +15,7 @@ const config = {
 	input: "src/plugin.ts",
 	output: {
 		inlineDynamicImports: true,
+		format: "cjs",
 		file: `${sdPlugin}/bin/plugin.js`,
 		sourcemap: isWatching,
 		sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
@@ -34,10 +35,11 @@ const config = {
 		nodeResolve({
 			browser: false,
 			exportConditions: ["node"],
-			preferBuiltins: true,
-			extensions: [".js", ".ts"]
+			preferBuiltins: true
 		}),
-		commonjs(),
+		commonjs({
+			ignoreDynamicRequires: true
+		}),
 		!isWatching && terser(),
 		{
 			name: "emit-module-package-file",
