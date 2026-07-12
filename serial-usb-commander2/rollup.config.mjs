@@ -13,9 +13,11 @@ const sdPlugin = "com.butzy79.serial-usb-commander2.sdPlugin";
  */
 const config = {
 	input: "src/plugin.ts",
+	external: [
+		"serialport"
+	],
 	output: {
 		inlineDynamicImports: true,
-		format: "cjs",
 		file: `${sdPlugin}/bin/plugin.js`,
 		sourcemap: isWatching,
 		sourcemapPathTransform: (relativeSourcePath, sourcemapPath) => {
@@ -37,9 +39,7 @@ const config = {
 			exportConditions: ["node"],
 			preferBuiltins: true
 		}),
-		commonjs({
-			ignoreDynamicRequires: true
-		}),
+		commonjs(),
 		!isWatching && terser(),
 		{
 			name: "emit-module-package-file",
