@@ -11,7 +11,7 @@ export class SendSerialCommand extends SingletonAction<SerialSettings> {
 		console.log("USB SERIAL COMMAND:", command);
 
 		const port = new SerialPort({
-			path: "COM3",
+			path: "COM5",
 			baudRate: 115200
 		});
 
